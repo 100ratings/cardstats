@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Estatísticas de Cartas - Resultados</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link href="../css/ratchet.css" rel="stylesheet">
+    <style>
+        .table-view-cell {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 15px;
+        }
+        .pull-right {
+            text-align: right;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+        .label-left {
+            text-align: left;
+            flex-grow: 1;
+        }
+        #combined-row {
+            color: black;
+        }
+    </style>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="../js/plugins/jqplot.barRenderer.min.js"></script>
+    <script type="text/javascript" src="../js/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+    <script type="text/javascript" src="../js/plugins/jqplot.pointLabels.min.js"></script>
+    <script type="text/javascript" src="../js/spin.js"></script>
+    <script type="text/javascript" src="../js/app/result.js"></script>
+</head>
+<body id="tbody">
+    <header class="bar bar-nav">
+        <h1 class="title">Resultados</h1>
+    </header>
+    <div class="content">
+        <div class="content-padded">
+            <div id="results">
+                <ul class="table-view">
+                    <li class="table-view-cell">
+                        <span class="label-left">Tamanho da amostra (N):</span>
+                        <span id="sampleSize" class="pull-right">0</span>
+                    </li>
+                    <li class="table-view-cell">
+                        <span class="label-left">Carta: <b id="cardLabel"></b> ocorreu</span>
+                        <span id="cardOddsValue" class="pull-right"></span>
+                    </li>
+                    <li class="table-view-cell">
+                        <span class="label-left">Posição: <b id="posLabel"></b> ocorreu</span>
+                        <span id="posOddsValue" class="pull-right"></span>
+                    </li>
+                    <li id="combined-row" class="table-view-cell">
+                        <b class="label-left">Probabilidade estimada:</b>
+                        <span id="combinedOdds" class="pull-right"><b>1 em 0</b></span>
+                    </li>
+                </ul>
+                <div id="chart1" style="height:100px;width:100%;"></div>
+                <div id="chart2" style="height:100px;width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
