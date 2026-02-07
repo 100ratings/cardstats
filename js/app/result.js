@@ -31,32 +31,48 @@ $(document).ready(function(){
         var targetOdds = 2700 + k;
         var seedBase = (card * 1000) + (suit * 100) + n;
 
-        var finalCardOdds, finalPosOdds;
-        var found = false;
+        // --- LÓGICA DE BUSCA DE PAR PERFEITO ---
+        var mostSpokenIndices = [0, 13, 26, 12, 25, 38, 51, 11, 24, 10, 23, 37, 50];
+        var currentCardIdx = (suit * 13) + card;
+        var isMostSpoken = mostSpokenIndices.indexOf(currentCardIdx) !== -1;
 
-        var startC = 51.10 + (seededRandom(seedBase + 500) * 1.80);
-        
-        for (var offset = 0; offset <= 2.00; offset += 0.01) {
-            var checkPoints = [startC + offset, startC - offset];
-            for (var i = 0; i < checkPoints.length; i++) {
-                var c = parseFloat(checkPoints[i].toFixed(2));
-                if (c < 50.00 || c > 54.00) continue;
-                var pNeeded = targetOdds / c;
-                var pRounded = Math.round(pNeeded * 100) / 100;
-                if (Math.round(c * pRounded) === targetOdds) {
-                    finalCardOdds = c;
-                    finalPosOdds = pRounded;
-                    found = true;
-                    break;
+        var baseCardOdds = isMostSpoken ? 27.12 : 51.54;
+        var bestCard = baseCardOdds;
+        var bestPos = targetOdds / baseCardOdds;
+        var minDiff = 999;
+
+        // Procuramos em um pequeno intervalo ao redor da base (±1.00)
+        // para encontrar o par que multiplicado e arredondado para 2 casas
+        // chegue o mais próximo possível do alvo inteiro.
+        for (var cOffset = -100; cOffset <= 100; cOffset++) {
+            var testCard = parseFloat((baseCardOdds + (cOffset / 100)).toFixed(2));
+            var rawPos = targetOdds / testCard;
+            
+            // Testamos a posição arredondada para baixo e para cima (2 casas)
+            var posOptions = [
+                parseFloat(rawPos.toFixed(2)),
+                parseFloat((Math.floor(rawPos * 100) / 100).toFixed(2)),
+                parseFloat((Math.ceil(rawPos * 100) / 100).toFixed(2))
+            ];
+
+            for (var j = 0; j < posOptions.length; j++) {
+                var testPos = posOptions[j];
+                var product = testCard * testPos;
+                var diff = Math.abs(product - targetOdds);
+                
+                // Queremos que o produto arredondado para o inteiro seja EXATAMENTE o targetOdds
+                // e que a diferença residual seja a menor possível.
+                if (Math.round(product) === targetOdds && diff < minDiff) {
+                    minDiff = diff;
+                    bestCard = testCard;
+                    bestPos = testPos;
                 }
             }
-            if (found) break;
+            if (minDiff < 0.01) break; // Encontramos um par excelente
         }
 
-        if (!found) {
-            finalCardOdds = 52.00;
-            finalPosOdds = (targetOdds / 52.00);
-        }
+        var finalCardOdds = bestCard;
+        var finalPosOdds = bestPos;
         
         var cardPerc = (100 / finalCardOdds).toFixed(2);
         var posPerc = (100 / finalPosOdds).toFixed(2);
@@ -82,9 +98,15 @@ $(document).ready(function(){
         var cardsData = [];
         var positionsData = [];
         var fixedSeed = 12345;
+        var mostSpokenIndices = [0, 13, 26, 12, 25, 38, 51, 11, 24, 10, 23, 37, 50];
+
         for (var i = 0; i < 52; i++) {
-            cardsData.push(Math.floor(seededRandom(fixedSeed + i) * 1000) + 500);
-            positionsData.push(Math.floor(seededRandom(fixedSeed + i + 100) * 1000) + 500);
+            var baseVal = Math.floor(seededRandom(fixedSeed + i) * 400) + 600; 
+            if (mostSpokenIndices.indexOf(i) !== -1) {
+                baseVal += 800 + Math.floor(seededRandom(fixedSeed + i + 500) * 200); 
+            }
+            cardsData.push(baseVal);
+            positionsData.push(Math.floor(seededRandom(fixedSeed + i + 100) * 600) + 700);
         }
 
         var stats = { cards: cardsData, positions: positionsData };
@@ -94,15 +116,14 @@ $(document).ready(function(){
             ticks[x] = ""; pticks[x] = ""; selCardSeries[x] = 0; selPosSeries[x] = 0;
         }
         
-        // --- COPIANDO EXATAMENTE OS TICKS DO EXEMPLO ---
         ticks[0] = "A";
-        ticks[6] = "&#9824;"; // ♠
+        ticks[6] = "&#9824;"; 
         ticks[13] = "A";
-        ticks[19] = "<font color='red'>&#9829;</font>"; // ♥
+        ticks[19] = "<font color='red'>&#9829;</font>"; 
         ticks[26] = "A";
-        ticks[32] = "&#9827;"; // ♣
+        ticks[32] = "&#9827;"; 
         ticks[39] = "A";
-        ticks[45] = "<font color='red'>&#9830;</font>"; // ♦
+        ticks[45] = "<font color='red'>&#9830;</font>"; 
 
         pticks[0] = "1"; pticks[12] = "13"; pticks[25] = "26"; pticks[38] = "39"; pticks[51] = "52";
 
