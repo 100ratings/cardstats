@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>CartoMetria - Terminal de Seleção</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" content="0">
+
+    <link href="css/cartometria.css" rel="stylesheet">
+    <script>
+        cardFirst = true;
+        window.onpageshow = function(evt) {
+            if (evt.persisted) {
+                document.body.style.display = "none";
+                location.reload();
+            }
+        };
+    </script>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/spin.js"></script>
+    <script type="text/javascript" src="js/app/survey.js"></script>
+</head>
+
+<body id="tbody">
+
+    <div class="brand-header">
+        <div class="logo">Carto<span>Metria</span></div>
+    </div>
+
+    <main class="app-body">
+    <div id="cardPage">
+        <div class="container">
+            <div class="terminal-window">
+                <h1 class="title" style="text-align: center; margin-bottom: 20px;">Entrada de Dados</h1>
+                
+                <div class="status-display">
+                    <span id="cardText">AGUARDANDO SELEÇÃO...</span>
+                </div>
+
+                <div class="card-grid">
+                    <button id="cardButton0" class="btn card-btn">A</button>
+                    <button id="cardButton1" class="btn card-btn">2</button>
+                    <button id="cardButton2" class="btn card-btn">3</button>
+                    <button id="cardButton3" class="btn card-btn">4</button>
+                    <button id="cardButton4" class="btn card-btn">5</button>
+                    <button id="cardButton5" class="btn card-btn">6</button>
+                    <button id="cardButton6" class="btn card-btn">7</button>
+                    <button id="cardButton7" class="btn card-btn">8</button>
+                    <button id="cardButton8" class="btn card-btn">9</button>
+                    <button id="cardButton9" class="btn card-btn">10</button>
+                    <button id="cardButton10" class="btn card-btn">J</button>
+                    <button id="cardButton11" class="btn card-btn">Q</button>
+                    <button id="cardButton12" class="btn card-btn">K</button>
+                </div>
+
+                <div class="suit-grid">
+                    <button id="suitButton0" class="btn suit-btn text-black">♠</button>
+                    <button id="suitButton1" class="btn suit-btn text-red">♥</button>
+                    <button id="suitButton2" class="btn suit-btn text-black">♣</button>
+                    <button id="suitButton3" class="btn suit-btn text-red">♦</button>
+                </div>
+
+                <button id="nButton" class="btn btn-primary btn-block">CONFIRMAR CARTA</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="posPage" style="display: none;">
+        <div class="container">
+            <div class="terminal-window">
+                <h1 class="title" style="text-align: center; margin-bottom: 20px;">Definir Posição</h1>
+                
+                <div class="status-display">
+                    <span id="positionText">POSIÇÃO: 0</span>
+                </div>
+
+                <div class="pos-grid">
+                    <button id="posButton1" class="btn card-btn">1</button>
+                    <button id="posButton2" class="btn card-btn">2</button>
+                    <button id="posButton3" class="btn card-btn">3</button>
+                    <button id="posButton4" class="btn card-btn">4</button>
+                    <button id="posButton5" class="btn card-btn">5</button>
+                    <button id="posButton6" class="btn card-btn">6</button>
+                    <button id="posButton7" class="btn card-btn">7</button>
+                    <button id="posButton8" class="btn card-btn">8</button>
+                    <button id="posButton9" class="btn card-btn">9</button>
+                    <button id="posButton0" class="btn card-btn">0</button>
+                </div>
+
+                <button id="sButton" class="btn btn-primary btn-block">PROCESSAR DADOS</button>
+            </div>
+        </div>
+    </div>
+    
+    <div style="display: none;">
+        <form id="form" method="post" action="/api">
+            <input id="action" name="action" value="inc" type="hidden">
+            <input id="delay" name="delay" value="true" type="hidden">
+            <input id="profileId" name="profileId" value="" type="hidden">
+            <input id="card" name="card" value="" type="hidden">
+            <input id="suit" name="suit" value="" type="hidden">
+            <input id="pos" name="pos" value="" type="hidden">
+        </form>
+    </div>
+    </main>
+
+</body>
+</html>

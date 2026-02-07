@@ -1,0 +1,311 @@
+/* CartoMetria - Professional Data Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --bg-dark: #0f172a;
+    --bg-panel: #1e293b;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --primary: #10b981; /* Emerald - Data/Success */
+    --primary-hover: #059669;
+    --accent: #3b82f6; /* Blue - Info */
+    --danger: #ef4444;
+    --border: #334155;
+    --content-offset-y: -25px; /* Ajuste global da posição vertical do conteúdo */
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+.app-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(var(--content-offset-y));
+}
+
+/* Layout Containers */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.terminal-window {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+/* Typography */
+h1, h2, h3 {
+    margin-top: 0;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+h1 { font-size: 2.5rem; color: var(--text-main); }
+h3 { font-size: 1.25rem; color: var(--text-muted); font-weight: 500; }
+
+p {
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* Header & Branding */
+.brand-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.logo span { color: var(--primary); }
+
+/* Buttons & Inputs */
+.btn {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-decoration: none;
+    min-width: 45px;
+}
+
+.btn:hover {
+    background-color: var(--border);
+    border-color: var(--text-muted);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.3);
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Grid Systems for Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.suit-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.pos-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto 30px auto;
+}
+
+/* Specific Button Styles */
+.card-btn {
+    font-family: 'Inter', monospace;
+    font-size: 1.2rem;
+}
+
+.suit-btn {
+    font-size: 2rem;
+    padding: 10px 0;
+    width: 60px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Status Display */
+.status-display {
+    background: var(--bg-dark);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 15px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Landing Page Specifics */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.feature-card {
+    background: var(--bg-panel);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.feature-card h3 { color: var(--text-main); margin-bottom: 10px; }
+
+/* Footer */
+footer {
+    margin-top: auto;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Utilities */
+.text-red { color: var(--danger) !important; }
+.text-black { color: var(--text-main) !important; } /* In dark mode, black suits are white */
+
+/* jqPlot Overrides for Dark Mode */
+.jqplot-axis { color: var(--text-muted) !important; }
+.jqplot-grid-canvas { background: transparent !important; }
+
+/* Spinner Override */
+.spinner div div { background-color: #fff !important; }
+
+/* --- FIX FOR GRID BUTTONS (iOS Stability) --- */
+/* Garante geometria fixa para botões de grade (Cartas, Naipes, Posição) */
+.card-grid .btn,
+.suit-grid .btn,
+.pos-grid .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0; /* Remove padding variável */
+    
+    /* iOS / Mobile Stability */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    outline: none;
+    transform: none !important; /* Remove efeito de pular */
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s; /* Apenas cor */
+}
+
+/* Tamanhos específicos */
+.card-grid .btn,
+.pos-grid .btn {
+    height: 50px;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.suit-grid .btn {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+}
+
+/* Estado Selecionado (.btn-primary) dentro das grades */
+/* Sobrescreve o estilo padrão do .btn-primary que altera geometria */
+.card-grid .btn.btn-primary,
+.suit-grid .btn.btn-primary,
+.pos-grid .btn.btn-primary {
+    background-color: var(--primary);
+    border: 1px solid var(--primary); /* Mantém borda de 1px */
+    
+    /* Reseta expansões do .btn-primary original */
+    padding: 0;
+    box-shadow: none;
+    font-size: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+/* Correção: Preservar cor do texto/símbolo original mesmo selecionado */
+.card-grid .btn.btn-primary { color: #ffffff !important; }
+.pos-grid .btn.btn-primary { color: #ffffff !important; }
+.suit-grid .btn.btn-primary.text-red { color: #d22 !important; }
+.suit-grid .btn.btn-primary.text-black { color: #ffffff !important; }
+
+/* Estado Active (Toque) - Apenas visual, sem geometria */
+.card-grid .btn:active,
+.suit-grid .btn:active,
+.pos-grid .btn:active {
+    transform: none !important;
+    filter: brightness(1.1);
+}
+
+/* Gráfico ajustado conforme exemplo cardodds.net */

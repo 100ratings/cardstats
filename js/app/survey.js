@@ -13,6 +13,7 @@ cards = ["Ás","2","3","4","5","6","7","8","9","10","Valete","Dama","Rei"];
 suit = 0;
 card = 0;
 position = 0;
+posDigits = []; // 0..2 dígitos para a correção
 settings = null;
 cardFirst = true;
 
@@ -66,25 +67,33 @@ function next() {
 }
 
 function submit() {
+	if (posDigits.length === 0) {
+		alert("Por favor, selecione uma posição.");
+		return;
+	}
+	const str = posDigits.join('');
+	const n = parseInt(str, 10);
+	if (n < 1 || n > 52) {
+		alert("Posição inválida (deve ser entre 1 e 52)");
+		posDigits = [];
+		updateUI();
+		return;
+	}
+	
 	$(".title").text("Buscando resultados...");
 	$(".btn").prop('disabled', true);
 	spin();
-	var url = "result/index.html?card=" + card + "&suit=" + suit + "&pos=" + position;
+	var url = "result/index.html?card=" + card + "&suit=" + suit + "&pos=" + n;
 	window.location.href = url;
 	return true;
 }
 
 function setCard(value) { card = value; updateUI(); }
 function setSuit(value) { suit = value; updateUI(); }
+
 function setPosition(value) {
-	var newValue = value;
-	if (position != 0) {
-		newValue = position*10+value;
-		if (newValue > 52) {
-			newValue = value;
-		}
-	}
-	position = newValue;
+	if (posDigits.length >= 2) posDigits = []; // reset ao terceiro clique
+	posDigits.push(String(value));
 	updateUI();
 }
 
@@ -92,13 +101,29 @@ function updateUI() {
 	if (card < 13)
 		text = cards[card]+" de "+suits[suit];
 	$("#cardText").text(text);
-	$("#positionText").text("Posição: "+position);
+	
+	var posDisplay = posDigits.length > 0 ? posDigits.join('') : "0";
+	$("#positionText").text("Posição: " + posDisplay);
+
+    // Highlight Card
+    $(".card-grid .btn").removeClass("btn-primary");
+    $("#cardButton" + card).addClass("btn-primary");
+
+    // Highlight Suit
+    $(".suit-grid .btn").removeClass("btn-primary");
+    $("#suitButton" + suit).addClass("btn-primary");
+
+    // Highlight Position
+    $(".pos-grid .btn").removeClass("btn-primary");
+    posDigits.forEach(function(d) {
+        $("#posButton" + d).addClass("btn-primary");
+    });
 }
 
 function spin() {
 	var opts = {
 			  lines: 13, length: 15, width: 5, radius: 20, corners: 1, rotate: 0, direction: 1,
-			  color: '#000', speed: 1, trail: 60, shadow: false, hwaccel: false,
+			  color: '#fff', speed: 1, trail: 60, shadow: false, hwaccel: false,
 			  className: 'spinner', zIndex: 2e9, top: '50%', left: '50%'
 			};
 	return new Spinner(opts).spin(document.getElementById('tbody'));

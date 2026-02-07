@@ -26,7 +26,7 @@ $(document).ready(function(){
         
         var cardShort = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
         var suitSymbols = ["&spades;", "&hearts;", "&clubs;", "&diams;"];
-        var colors = ["black", "red", "black", "red"];
+        var colors = ["#000000", "#ff5252", "#000000", "#ff5252"];
         
         var targetOdds = 2700 + k;
         var seedBase = (card * 1000) + (suit * 100) + n;
@@ -34,22 +34,15 @@ $(document).ready(function(){
         var finalCardOdds, finalPosOdds;
         var found = false;
 
-        // Gerar um ponto de partida aleatório mas fixo (baseado na semente) entre 51.10 e 52.90
-        // Isso garante que a carta não seja sempre 51.00 ou 52.00
         var startC = 51.10 + (seededRandom(seedBase + 500) * 1.80);
         
-        // Procurar por um par de números com 2 casas decimais que multiplicados deem o alvo
-        // Expandimos a busca a partir do ponto inicial
         for (var offset = 0; offset <= 2.00; offset += 0.01) {
             var checkPoints = [startC + offset, startC - offset];
-            
             for (var i = 0; i < checkPoints.length; i++) {
                 var c = parseFloat(checkPoints[i].toFixed(2));
                 if (c < 50.00 || c > 54.00) continue;
-
                 var pNeeded = targetOdds / c;
                 var pRounded = Math.round(pNeeded * 100) / 100;
-                
                 if (Math.round(c * pRounded) === targetOdds) {
                     finalCardOdds = c;
                     finalPosOdds = pRounded;
@@ -60,7 +53,6 @@ $(document).ready(function(){
             if (found) break;
         }
 
-        // Fallback caso a busca falhe (muito improvável)
         if (!found) {
             finalCardOdds = 52.00;
             finalPosOdds = (targetOdds / 52.00);
@@ -89,9 +81,10 @@ $(document).ready(function(){
     function renderCharts(card, suit, n, cardVal, seedBase) {
         var cardsData = [];
         var positionsData = [];
+        var fixedSeed = 12345;
         for (var i = 0; i < 52; i++) {
-            cardsData.push(Math.floor(seededRandom(seedBase + i) * 1000) + 500);
-            positionsData.push(Math.floor(seededRandom(seedBase + i + 100) * 1000) + 500);
+            cardsData.push(Math.floor(seededRandom(fixedSeed + i) * 1000) + 500);
+            positionsData.push(Math.floor(seededRandom(fixedSeed + i + 100) * 1000) + 500);
         }
 
         var stats = { cards: cardsData, positions: positionsData };
@@ -101,12 +94,19 @@ $(document).ready(function(){
             ticks[x] = ""; pticks[x] = ""; selCardSeries[x] = 0; selPosSeries[x] = 0;
         }
         
-        ticks[0] = cardVal; ticks[6] = "♠"; ticks[13] = cardVal; ticks[19] = "<font color='red'>♥</font>";
-        ticks[26] = cardVal; ticks[32] = "♣"; ticks[39] = cardVal; ticks[45] = "<font color='red'>♦</font>";
+        // --- COPIANDO EXATAMENTE OS TICKS DO EXEMPLO ---
+        ticks[0] = "A";
+        ticks[6] = "&#9824;"; // ♠
+        ticks[13] = "A";
+        ticks[19] = "<font color='red'>&#9829;</font>"; // ♥
+        ticks[26] = "A";
+        ticks[32] = "&#9827;"; // ♣
+        ticks[39] = "A";
+        ticks[45] = "<font color='red'>&#9830;</font>"; // ♦
+
         pticks[0] = "1"; pticks[12] = "13"; pticks[25] = "26"; pticks[38] = "39"; pticks[51] = "52";
 
-        var suitHighlightMap = [6, 19, 32, 45];
-        var cardIdx = suitHighlightMap[suit];
+        var cardIdx = (suit * 13) + card;
         selCardSeries[cardIdx] = stats.cards[cardIdx];
         stats.cards[cardIdx] = 0;
 
@@ -120,12 +120,12 @@ $(document).ready(function(){
                 renderer: $.jqplot.BarRenderer,
                 rendererOptions: { fillToZero: true, barWidth: 3, shadow: false }
             },
-            series: [{ label: " " }, { label: " ", color: "#FF0000" }],
+            series: [{ label: " ", color: "#334155" }, { label: " ", color: "#10b981" }],
             axes: {
-                xaxis: { renderer: $.jqplot.CategoryAxisRenderer, showTicks: true },
+                xaxis: { renderer: $.jqplot.CategoryAxisRenderer, showTicks: true, tickOptions: { textColor: '#94a3b8' } },
                 yaxis: { showTicks: false, pad: 0 }
             },
-            grid: { drawGridLines: false, background: '#FFFDF6', borderWeight: 0, shadow: false }
+            grid: { drawGridLines: false, background: 'transparent', borderWeight: 0, shadow: false }
         };
 
         var cardChart = $.jqplot('chart1', [stats.cards, selCardSeries], $.extend(true, {}, commonOptions, {
@@ -159,7 +159,7 @@ $(document).ready(function(){
     function spin() {
         var s = new Spinner({
             lines: 13, length: 15, width: 5, radius: 20, corners: 1, rotate: 0, direction: 1,
-            color: '#000', speed: 1, trail: 60, shadow: false, hwaccel: false,
+            color: '#fff', speed: 1, trail: 60, shadow: false, hwaccel: false,
             className: 'spinner', zIndex: 2e9, top: '50%', left: '50%'
         }).spin(document.getElementById('tbody'));
         window.spinner = s;
