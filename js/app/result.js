@@ -41,11 +41,12 @@ $(document).ready(function(){
         var bestPos = targetOdds / baseCardOdds;
         var minDiff = 999;
 
-        // Procuramos em um pequeno intervalo ao redor da base (±1.00)
+        // Procuramos em um intervalo maior ao redor da base (±5.00)
         // para encontrar o par que multiplicado e arredondado para 2 casas
-        // chegue o mais próximo possível do alvo inteiro.
-        for (var cOffset = -100; cOffset <= 100; cOffset++) {
+        // chegue o mais próximo possível do alvo inteiro, preferindo >= alvo.
+        for (var cOffset = -500; cOffset <= 500; cOffset++) {
             var testCard = parseFloat((baseCardOdds + (cOffset / 100)).toFixed(2));
+            if (testCard <= 0) continue;
             var rawPos = targetOdds / testCard;
             
             // Testamos a posição arredondada para baixo e para cima (2 casas)
@@ -58,17 +59,21 @@ $(document).ready(function(){
             for (var j = 0; j < posOptions.length; j++) {
                 var testPos = posOptions[j];
                 var product = testCard * testPos;
-                var diff = Math.abs(product - targetOdds);
                 
                 // Queremos que o produto arredondado para o inteiro seja EXATAMENTE o targetOdds
-                // e que a diferença residual seja a menor possível.
-                if (Math.round(product) === targetOdds && diff < minDiff) {
-                    minDiff = diff;
-                    bestCard = testCard;
-                    bestPos = testPos;
+                if (Math.round(product) === targetOdds) {
+                    var diff = Math.abs(product - targetOdds);
+                    // Penaliza resultados abaixo do alvo para evitar a impressão de erro (ex: 2715.999)
+                    if (product < targetOdds) diff += 10;
+
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        bestCard = testCard;
+                        bestPos = testPos;
+                    }
                 }
             }
-            if (minDiff < 0.01) break; // Encontramos um par excelente
+            if (minDiff < 0.0001) break; // Encontramos um par perfeito
         }
 
         var finalCardOdds = bestCard;
@@ -76,7 +81,16 @@ $(document).ready(function(){
         
         var cardPerc = (100 / finalCardOdds).toFixed(2);
         var posPerc = (100 / finalPosOdds).toFixed(2);
-        var sampleSize = 125000 + Math.floor(seededRandom(seedBase) * 1000);
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth();
+        var yyyy = today.getFullYear();
+        var sampleSize = 125385;
+        for(var m=0; m<mm; m++) {
+            var dim = new Date(yyyy, m+1, 0).getDate();
+            sampleSize += (dim * (dim + 1)) / 2;
+        }
+        sampleSize += (dd * (dd + 1)) / 2;
         
         $("#sampleSize").text(sampleSize.toLocaleString('pt-BR'));
         $("#cardLabel").html(cardShort[card] + suitSymbols[suit]);
